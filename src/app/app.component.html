@@ -1,2 +1,6 @@
-
-<router-outlet />
+<div class="flex h-screen">
+    <app-sidebar *ngIf="showSidebar" class="w-64"></app-sidebar>
+    <div class="flex-1 m-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
