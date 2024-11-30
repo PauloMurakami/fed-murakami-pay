@@ -18,7 +18,6 @@ export class AuthService {
       { id: number, name: string }
     ] }>(url, { email, password }).pipe(
       map(response => {
-        console.log(response)
         if (response.access_token) {
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('roles', JSON.stringify(response.roles));

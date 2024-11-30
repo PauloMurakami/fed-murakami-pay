@@ -24,7 +24,6 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe(success => {
-      console.log(success)
       if (success) {
         this.router.navigate(['/home']);
       } else {

@@ -1,2 +1,35 @@
-<h1>Welcome to the Home Page</h1>
-<p>This page is protected and requires authentication to access.</p>
+<div class="mt-8">
+    <h2 class="text-2xl font-bold mb-4 text-white"><span class="text-green-500">Lembretes</span></h2>
+    <ul class="space-y-4"> 
+      <li *ngFor="let calendar of calendarsToday" class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between cursor-pointer" (click)="openDetailModal(calendar)">
+        <div class="text-black flex flex-row space-x-4 w-full">
+          <div class="flex-1">
+            <p><strong>Tipo:</strong><br/> {{ calendar.type }}</p>
+          </div>
+          <div class="flex-1">
+            <p><strong>Descrição:</strong><br/> {{ calendar.description | slice:0:12 }}...</p>
+          </div>
+          <div class="flex-1">
+            <p><strong>Expiração:</strong><br/> {{ calendar.expirated_at | date:'dd/MM/YYYY' }}</p>
+          </div>
+          <div class="flex-1">
+            <p><strong>Status:</strong><br/> {{ calendar.status }}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- Modal de Detalhes -->
+  <div *ngIf="isDetailModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
+      <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl" (click)="closeDetailModal()">&times;</span>
+      <h2 class="text-2xl font-bold mb-4 text-black">Detalhes do Lembrete</h2>
+      <div class="text-black">
+        <p><strong>Tipo:</strong> {{ selectedCalendar?.type }}</p>
+        <p><strong>Descrição:</strong> {{ selectedCalendar?.description }}</p>
+        <p><strong>Expiração:</strong> {{ selectedCalendar?.expirated_at | date:'dd/MM/YYYY' }}</p>
+        <p><strong>Status:</strong> {{ selectedCalendar?.status }}</p>
+      </div>
+    </div>
+  </div>
