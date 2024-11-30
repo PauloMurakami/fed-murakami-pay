@@ -21,6 +21,10 @@ export enum CalendarVisibilityEnum {
   ADMINISTRADORES = "administradores"
 }
 
+interface GroupedCalendars {
+  [key: string]: CalendarData[];
+}
+
 @Component({
   selector: 'app-calendar',
   standalone: true,
@@ -33,9 +37,10 @@ export class CalendarComponent implements OnInit {
   isEditModalOpen = false;
   isDeleteModalOpen = false;
   calendars: CalendarData[] = [];
+  groupedCalendars: GroupedCalendars = {};
   selectedCalendar: CalendarData | null = null;
 
-  constructor(private calendarService: CalendarService,private cdr: ChangeDetectorRef) {}
+  constructor(private calendarService: CalendarService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.getCalendars();
@@ -71,8 +76,28 @@ export class CalendarComponent implements OnInit {
 
   getCalendars() {
     this.calendarService.getCalendars().subscribe(calendars => {
-      this.calendars = [...calendars];
+      this.calendars = calendars;
+      this.groupCalendarsByDate();
       this.cdr.detectChanges();
+    });
+  }
+
+  groupCalendarsByDate() {
+    this.groupedCalendars = this.calendars.reduce((groups: GroupedCalendars, calendar) => {
+      const date = new Date(calendar.expirated_at).toLocaleDateString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(calendar);
+      return groups;
+    }, {});
+  }
+
+  getGroupedCalendarKeys(): string[] {
+    return Object.keys(this.groupedCalendars).sort((a, b) => {
+      const dateA = new Date(a.split('/').reverse().join('-'));
+      const dateB = new Date(b.split('/').reverse().join('-'));
+      return dateB.getTime() - dateA.getTime();
     });
   }
 
@@ -92,6 +117,7 @@ export class CalendarComponent implements OnInit {
       this.getCalendars(); // Atualiza a lista de calendários
       this.closeModal();
     }, error => {
+      console.error('Error creating calendar', error);
     });
   }
 
@@ -114,6 +140,7 @@ export class CalendarComponent implements OnInit {
       this.getCalendars(); // Atualiza a lista de calendários
       this.closeEditModal();
     }, error => {
+      console.error('Error updating calendar', error);
     });
   }
 
@@ -137,9 +164,11 @@ export class CalendarComponent implements OnInit {
     if (!this.selectedCalendar || this.selectedCalendar.id === undefined) return;
 
     this.calendarService.deleteCalendar(this.selectedCalendar.id).subscribe(response => {
+      console.log('Calendar deleted', response);
       this.getCalendars(); // Atualiza a lista de calendários
       this.closeDeleteModal();
     }, error => {
+      console.error('Error deleting calendar', error);
     });
   }
 }

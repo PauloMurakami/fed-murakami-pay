@@ -1,49 +1,57 @@
 <!-- calendar.component.html -->
-<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="openModal()">Cadastrar Nova Agenda</button>
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="openModal()">Cadastrar
+  Nova Agenda</button>
 
 <!-- Modal de Criação -->
 <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
   <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
-    <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl" (click)="closeModal()">&times;</span>
+    <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl"
+      (click)="closeModal()">&times;</span>
     <h2 class="text-2xl font-bold mb-4 text-black">Cadastrar Novo Calendário</h2>
     <form (submit)="createCalendar($event)" class="space-y-4">
       <div>
         <label for="type" class="block text-sm font-medium text-black">Tipo:</label>
-        <select id="type" name="type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <select id="type" name="type" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
           <option value="contas_a_pagar">Contas a Pagar</option>
           <option value="contas_a_receber">Contas a Receber</option>
           <option value="pedidos_a_entregar">Pedidos a Entregar</option>
         </select>
       </div>
-      
+
       <div>
         <label for="status" class="block text-sm font-medium text-black">Status:</label>
-        <select id="status" name="status" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <select id="status" name="status" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
           <option value="Aberto">Aberto</option>
           <option value="Concluido">Concluido</option>
         </select>
       </div>
-      
+
       <div>
         <label for="visibility" class="block text-sm font-medium text-black">Visibilidade:</label>
-        <select id="visibility" name="visibility" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <select id="visibility" name="visibility" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
           <option value="todos">Todos</option>
           <option value="somente_eu">Somente Eu</option>
           <option value="administradores">Administradores</option>
         </select>
       </div>
-      
+
       <div>
         <label for="expirated_at" class="block text-sm font-medium text-black">Data de Expiração:</label>
-        <input id="expirated_at" name="expirated_at" type="datetime-local" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <input id="expirated_at" name="expirated_at" type="datetime-local" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
       </div>
-      
+
       <div>
         <label for="description" class="block text-sm font-medium text-black">Descrição:</label>
-        <textarea id="description" name="description" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"></textarea>
+        <textarea id="description" name="description" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"></textarea>
       </div>
-      
-      <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cadastrar</button>
+
+      <button type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cadastrar</button>
     </form>
   </div>
 </div>
@@ -51,66 +59,77 @@
 <!-- Lista de Calendários -->
 <div class="mt-8">
   <h2 class="text-2xl font-bold mb-4 text-white">Todas as agendas</h2>
-  <ul class="space-y-4">
-    <li *ngFor="let calendar of calendars" [ngClass]="{'bg-green-100': calendar.status === 'Concluido', 'bg-white': calendar.status !== 'Concluido'}" class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
-      <div class="text-black">
-        <p><strong>Tipo:</strong> {{ calendar.type }}</p>
-        <p><strong>Status:</strong> {{ calendar.status }}</p>
-        <p><strong>Expiração:</strong> {{ calendar.expirated_at | date:'dd/MM/YYYY - HH:mm' }}</p>
-        <p><strong>Descrição:</strong> {{ calendar.description | slice:0:50 }}...</p>
-      </div>
-      <div class="flex space-x-2">
-        <button *ngIf="calendar.status != 'Concluido'"  class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" (click)="markAsComplete(calendar)"><i class="fa-solid fa-check"></i></button>
-        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" (click)="openEditModal(calendar)"> <i class="fas fa-edit"></i></button>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="openDeleteModal(calendar)"><i class="fa-solid fa-trash"></i></button>
-      </div>
-    </li>
-  </ul>
+  <div *ngFor="let date of getGroupedCalendarKeys()" class="mb-4 p-4 bg-gray-500 rounded-lg">
+    <h3 class="text-xl font-bold mb-2 text-white">{{ date }}</h3>
+    <ul class="space-y-4">
+      <li *ngFor="let calendar of groupedCalendars[date]" [ngClass]="{'bg-green-100': calendar.status === 'Concluido', 'bg-white': calendar.status !== 'Concluido'}" class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
+        <div class="text-black">
+          <p><strong>Tipo:</strong> {{ calendar.type }}</p>
+          <p><strong>Status:</strong> {{ calendar.status }}</p>
+          <p><strong>Expiração:</strong> {{ calendar.expirated_at | date:'dd/MM/YYYY - HH:mm' }}</p>
+          <p><strong>Descrição:</strong> {{ calendar.description | slice:0:50 }}...</p>
+        </div>
+        <div class="flex space-x-2">
+          <button *ngIf="calendar.status != 'Concluido'" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" (click)="markAsComplete(calendar)"><i class="fa-solid fa-check"></i></button>
+          <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" (click)="openEditModal(calendar)"><i class="fas fa-edit"></i></button>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="openDeleteModal(calendar)"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
 
 <!-- Modal de Edição -->
 <div *ngIf="isEditModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
   <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
-    <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl" (click)="closeEditModal()">&times;</span>
+    <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl"
+      (click)="closeEditModal()">&times;</span>
     <h2 class="text-2xl font-bold mb-4 text-black">Editar Calendário</h2>
     <form (submit)="editCalendar($event)" class="space-y-4">
       <div>
         <label for="edit-type" class="block text-sm font-medium text-black">Tipo:</label>
-        <select id="edit-type" name="type" [value]="selectedCalendar?.type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <select id="edit-type" name="type" [value]="selectedCalendar?.type" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
           <option value="contas_a_pagar">Contas a Pagar</option>
           <option value="contas_a_receber">Contas a Receber</option>
           <option value="pedidos_a_entregar">Pedidos a Entregar</option>
         </select>
       </div>
-      
+
       <div>
         <label for="edit-status" class="block text-sm font-medium text-black">Status:</label>
-        <select id="edit-status" name="status" [value]="selectedCalendar?.status" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <select id="edit-status" name="status" [value]="selectedCalendar?.status" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
           <option value="Aberto">Aberto</option>
           <option value="Concluido">Concluido</option>
         </select>
       </div>
-      
+
       <div>
         <label for="edit-visibility" class="block text-sm font-medium text-black">Visibilidade:</label>
-        <select id="edit-visibility" name="visibility" [value]="selectedCalendar?.visibility" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <select id="edit-visibility" name="visibility" [value]="selectedCalendar?.visibility" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
           <option value="todos">Todos</option>
           <option value="somente_eu">Somente Eu</option>
           <option value="administradores">Administradores</option>
         </select>
       </div>
-      
+
       <div>
         <label for="edit-expirated_at" class="block text-sm font-medium text-black">Data de Expiração:</label>
-        <input id="edit-expirated_at" name="expirated_at" type="datetime-local" [value]="selectedCalendar?.expirated_at | date:'yyyy-MM-ddTHH:mm'" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
+        <input id="edit-expirated_at" name="expirated_at" type="datetime-local"
+          [value]="selectedCalendar?.expirated_at | date:'yyyy-MM-ddTHH:mm'" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black">
       </div>
-      
+
       <div>
         <label for="edit-description" class="block text-sm font-medium text-black">Descrição:</label>
-        <textarea id="edit-description" name="description" [value]="selectedCalendar?.description" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"></textarea>
+        <textarea id="edit-description" name="description" [value]="selectedCalendar?.description" required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"></textarea>
       </div>
-      
-      <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Salvar</button>
+
+      <button type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Salvar</button>
     </form>
   </div>
 </div>
@@ -118,12 +137,16 @@
 <!-- Modal de Exclusão -->
 <div *ngIf="isDeleteModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
   <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
-    <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl" (click)="closeDeleteModal()">&times;</span>
+    <span class="close text-gray-500 hover:text-gray-700 cursor-pointer float-right text-2xl"
+      (click)="closeDeleteModal()">&times;</span>
     <h2 class="text-2xl font-bold mb-4 text-black">Excluir Calendário</h2>
-    <p class="text-black">Tem certeza que deseja excluir o calendário <strong>{{ selectedCalendar?.description }}</strong>?</p>
+    <p class="text-black">Tem certeza que deseja excluir o calendário <strong>{{ selectedCalendar?.description
+        }}</strong>?</p>
     <div class="mt-4 flex space-x-2">
-      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="deleteCalendar()">Excluir</button>
-      <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" (click)="closeDeleteModal()">Cancelar</button>
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        (click)="deleteCalendar()">Excluir</button>
+      <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        (click)="closeDeleteModal()">Cancelar</button>
     </div>
   </div>
 </div>
