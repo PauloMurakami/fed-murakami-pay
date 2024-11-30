@@ -60,9 +60,9 @@
         <p><strong>Descrição:</strong> {{ calendar.description | slice:0:50 }}...</p>
       </div>
       <div class="flex space-x-2">
-        <button *ngIf="calendar.status != 'Concluido'"  class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" (click)="markAsComplete(calendar)">Concluir</button>
-        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" (click)="openEditModal(calendar)">Editar</button>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="openDeleteModal(calendar)">Excluir</button>
+        <button *ngIf="calendar.status != 'Concluido'"  class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" (click)="markAsComplete(calendar)"><i class="fa-solid fa-check"></i></button>
+        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" (click)="openEditModal(calendar)"> <i class="fas fa-edit"></i></button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="openDeleteModal(calendar)"><i class="fa-solid fa-trash"></i></button>
       </div>
     </li>
   </ul>
